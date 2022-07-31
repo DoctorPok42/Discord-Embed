@@ -1,0 +1,36 @@
+.containerembed {
+  max-width: 600px;
+  background-color: var(--embed_color);
+  border-radius: 5px;
+  padding: 8px 16px 16px 12px;
+  font-family: "Nunito";
+
+  .title,
+  .titleurl {
+    float: left;
+    max-width: 500;
+    overflow: hidden;
+    font-size: 2rem;
+    font-weight: 1;
+    color: var(--blanc);
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    margin-right: 100px;
+    font-weight: 600;
+  }
+  .titleurl {
+    color: var(--blue);
+  }
+
+  .description {
+    font-size: 1.5rem;
+    font-weight: 1;
+    color: var(--blanc);
+    margin: 0;
+    margin-top: 10px;
+    padding: 0;
+
+    font-weight: 1;
+  }
+}

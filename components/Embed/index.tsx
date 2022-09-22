@@ -1,15 +1,16 @@
 import Field from "./field";
+import Image from "next/image";
 
 import styles from "./styles.module.scss";
 
 interface EmbedProps {
   title?: string | null;
   description?: string | null;
-  url?: string | null;
-  field?: { name: string; value: string }[];
-  thumbnail?: { url: string; width: number; height: number };
-  footer?: { text: string; icon_url: string };
-  color?: number | string | null;
+  url?: string | any;
+  field?: { txt: string; value: string }[] | null;
+  thumbnail?: { url: string };
+  footer?: { value: string; icon_url: string };
+  color?: string | null;
   timestamp?: string | Date;
   image?: { url: string; width: number; height: number };
 }
@@ -25,9 +26,20 @@ const Embed = ({
   timestamp,
   image,
 }: EmbedProps) => {
-  console.log(color);
   return (
     <main className={styles.containerembed}>
+      <span className={styles.color} style={{ backgroundColor: color }}></span>
+      {thumbnail && thumbnail.url !== "" ? (
+        <div className={styles.thumbnail}>
+          <Image
+            className="thumbnail"
+            src={thumbnail.url}
+            width={100}
+            height={100}
+            alt="thumbnail"
+          />
+        </div>
+      ) : null}
       {url?.startsWith("https://") || url?.startsWith("http://") ? (
         title && (
           <a href={url} target="blank">
@@ -39,7 +51,21 @@ const Embed = ({
       )}
       {description && <p className={styles.description}>{description}</p>}
       {field &&
-        field.map((f, i) => <Field key={i} name={f.name} value={f.value} />)}
+        field.map((f, i) => <Field key={i} txt={f.txt} value={f.value} />)}
+      {footer && (
+        <div className={styles.footer}>
+          {footer.icon_url && (
+            <Image
+              className="icon"
+              src={footer.icon_url}
+              width={20}
+              height={20}
+              alt="icon"
+            />
+          )}
+          <span>{footer.value}</span>
+        </div>
+      )}
     </main>
   );
 };

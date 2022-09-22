@@ -1,27 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Embed, InputText, Field, InputColor } from "../components";
+import { Embed, InputText, Field, InputColor, Thumbnail } from "../components";
+import { isValid } from "./helper";
+import { Message } from "../types/types";
 
 const Home: NextPage = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [url, setUrl] = useState<string>("");
-  const [field, setField] = useState<{ name: string; value: string }[]>([]);
+  const [field, setField] = useState<
+    { txt: string; value: string; id: number }[]
+  >([]);
   const [thumbnail, setThumbnail] = useState<{
     url: string;
-    width: number;
-    height: number;
   }>({
     url: "",
-    width: 0,
-    height: 0,
   });
-  const [footer, setFooter] = useState<{ text: string; icon_url: string }>({
-    text: "",
+  const [footer, setFooter] = useState<{ value: string; icon_url: string }>({
+    value: "",
     icon_url: "",
   });
-  const [color, setColor] = useState<number | string>("");
+  const [color, setColor] = useState<string>("");
   const [timestamp, setTimestamp] = useState<string | Date>("");
   const [image, setImage] = useState<{
     url: string;
@@ -33,21 +33,7 @@ const Home: NextPage = () => {
     height: 0,
   });
 
-  // voir si tout les champs sont remplis
-  const isValid = () => {
-    if (
-      title !== "" ||
-      description !== "" ||
-      thumbnail.url !== "" ||
-      color !== "" ||
-      timestamp !== ""
-    ) {
-      return true;
-    }
-    return false;
-  };
-
-  const handleChange = (args: string, value: any) => {
+  const handleChangeInputText = (args: string, value: any) => {
     switch (args) {
       case "title":
         setTitle(value);
@@ -58,13 +44,8 @@ const Home: NextPage = () => {
       case "url":
         setUrl(value);
         break;
-      case "color":
-        setColor(value);
-        break;
-      case "timestamp":
-        setTimestamp(value);
-        break;
-      default:
+      case "footer":
+        setFooter({ ...footer, value: value });
         break;
     }
   };
@@ -80,20 +61,35 @@ const Home: NextPage = () => {
       <div className="content1">
         <InputText
           name="title"
-          onChange={(args) => handleChange("title", args)}
+          onChange={(args) => handleChangeInputText("title", args)}
         />
-        <InputText name="url" onChange={(args) => handleChange("url", args)} />
+        <InputText
+          name="url"
+          onChange={(args) => handleChangeInputText("url", args)}
+        />
         <InputText
           name="description"
-          onChange={(args) => handleChange("description", args)}
+          onChange={(args) => handleChangeInputText("description", args)}
         />
-        <InputColor onChange={(args) => handleChange("color", args)} />
+        <InputText
+          name="footer"
+          onChange={(args) => handleChangeInputText("footer", args)}
+        />
+        <InputColor setColor={setColor} />
+        <Thumbnail setThumbnail={setThumbnail} />
+
         <div className="content_btn">
-          {/* quand on appui sur le bouton ajouter un Field comosant */}
           <button
             className="btn"
             onClick={() => {
-              setField([...field, { name: "", value: "" }]);
+              setField([
+                ...field,
+                {
+                  txt: "",
+                  value: "",
+                  id: field.length + 1,
+                },
+              ]);
             }}
           >
             Ajouter un champ
@@ -108,35 +104,43 @@ const Home: NextPage = () => {
             Supprimer le dernier champ
           </button>
         </div>
+
         {field.map((f, i) => (
           <Field
             key={i}
-            name={`field n°${i}`}
-            txt="Nom du champ"
+            txt={f.txt}
             value={f.value}
-            onChange={(args) => handleChange(`field${i}`, args)}
+            id={f.id}
+            onChange={(newField) => {
+              field.map((f) => {
+                if (f.id === newField.id) {
+                  setField([...field.slice(0, f.id - 1), newField]);
+                }
+                return f;
+              });
+            }}
           />
         ))}
       </div>
+
       <div className="content2">
-        {isValid() ? (
+        {isValid({
+          title,
+          description,
+          url,
+          field,
+          thumbnail,
+          footer,
+        } as Message) ? (
           <Embed
             title={title ? title : null}
             description={description ? description : null}
             url={url ? url : null}
-            {...{ field }}
-            thumbnail={{
-              url: "https://discord.com/assets/logo-8b5b8f8f8f8f8f8f8f8f8f8f8f8f8f8f8.png",
-              width: 128,
-              height: 128,
-            }}
-            footer={{
-              text: "text",
-              icon_url:
-                "https://discord.com/assets/logo-8b5b8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8.png",
-            }}
+            field={field ? field : undefined}
+            footer={footer ? footer : undefined}
+            timestamp={timestamp ? new Date() : undefined}
             color={color ? color : null}
-            timestamp="2020-01-01"
+            thumbnail={thumbnail ? thumbnail : undefined}
           />
         ) : (
           <h2>Commencez par rentrer quelque chose</h2>

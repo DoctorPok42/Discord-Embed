@@ -1,22 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./styles.module.scss";
 
 interface InputColorProps {
-  value?: string | number;
-  onChange: (args: string) => void;
+  setColor: (color: string) => void;
 }
 
-const InputColor = ({ onChange, value }: InputColorProps) => {
-  const handleChange = (args: string) => {
-    onChange(args);
-  };
+const InputColor = ({ setColor }: InputColorProps) => {
   return (
     <main className={styles.container}>
-      <input
-        type="color"
-        value={value}
-        onChange={(e) => handleChange(e.target.value)}
-      />
+      <h2>Ajouter une couleur</h2>
+      <input type="color" onChange={(e) => setColor(e.target.value)} />
     </main>
   );
 };

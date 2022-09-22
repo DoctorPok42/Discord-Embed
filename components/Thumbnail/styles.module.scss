@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: center;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  position: relative;
+  margin-left: 50px;
+
+  h2 {
+    font-family: "Nunito";
+    font-size: 1.2rem;
+    font-weight: 1;
+    color: var(--blanc);
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    margin-right: 50px;
+  }
+
+  input[type="file"] {
+    outline: none;
+    min-width: auto;
+    height: auto;
+    border: none;
+    margin: 0;
+    font-family: "Nunito";
+    color: var(--blanc);
+    transition: 0.2s;
+  }
+}

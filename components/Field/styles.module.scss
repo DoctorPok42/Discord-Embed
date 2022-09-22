@@ -3,47 +3,48 @@
   flex-direction: center;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-evenly;
   width: 100%;
-  height: 100px;
+  height: 150px;
   position: relative;
-  padding-left: 50px;
+  margin-bottom: 0px;
+  border-bottom: 2px solid var(--noir2);
 
-  h2 {
-    font-family: "Nunito";
-    font-size: 2rem;
-    font-weight: 1;
-    color: var(--blanc);
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    margin-right: 100px;
-    text-transform: capitalize;
-  }
+  .flexbox {
+    h2 {
+      font-size: 2rem;
+      font-weight: bold;
+      font-family: "Nunito";
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      margin-bottom: 10px;
+    }
+    input[type="text"] {
+      outline: none;
+      width: auto;
+      height: auto;
+      border: none;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 0;
+      font-size: 2rem;
+      font-family: "Nunito";
+      background-color: var(--noir2);
+      color: var(--blanc);
+      transition: 0.3s;
+    }
 
-  input[type="text"] {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    outline: none;
-    width: auto;
-    height: auto;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 0;
-    font-size: 2rem;
-    font-family: "Nunito";
-    background-color: var(--noir2);
-    color: var(--blanc);
-    transition: 0.3s;
-  }
+    input[type="text"]:nth-child(1) {
+      width: 0%;
+    }
 
-  input:hover {
-    box-shadow: 0 0 0 2px var(--blue);
-  }
+    input:hover {
+      box-shadow: 0 0 0 2px var(--blue);
+    }
 
-  input:focus {
-    box-shadow: 0 0 0 2px var(--blue);
+    input:focus {
+      box-shadow: 0 0 0 2px var(--blue);
+    }
   }
 }

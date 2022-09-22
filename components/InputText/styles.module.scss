@@ -7,36 +7,43 @@
   width: 100%;
   height: 100px;
   position: relative;
-  padding-left: 50px;
+  margin-left: 50px;
 
   h2 {
     font-family: "Nunito";
-    font-size: 2rem;
+    font-size: 1.2rem;
     font-weight: 1;
     color: var(--blanc);
     text-align: center;
     margin: 0;
     padding: 0;
-    margin-right: 100px;
     text-transform: capitalize;
   }
 
   input[type="text"] {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 10%;
     outline: none;
-    min-width: auto;
-    height: auto;
+    width: 60%;
+    height: 30px;
     border: none;
     border-radius: 5px;
     padding: 10px;
     margin: 0;
-    font-size: 2rem;
+    font-size: 1.2rem;
     font-family: "Nunito";
     background-color: var(--noir2);
     color: var(--blanc);
     transition: 0.2s;
+  }
+
+  input[type="text"]:focus {
+    float: left;
+    margin-left: -50px;
+    width: 90%;
+    height: auto;
+    overflow: hidden scroll;
+    z-index: 9999;
   }
 
   input:hover {

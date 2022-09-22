@@ -17,6 +17,7 @@ const InputText = ({ onChange, name }: InputTextProps) => {
         type="text"
         placeholder={`Enter ${name}`}
         onChange={(e) => handleChange(e.target.value)}
+        className={name === "description" ? styles.description : ""}
       />
     </main>
   );

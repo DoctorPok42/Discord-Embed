@@ -1,36 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Embed, InputText, Field, InputColor, Thumbnail } from "../components";
 import { isValid } from "./helper";
-import { Message } from "../types/types";
+import { Message } from "../types/message";
 
 const Home: NextPage = () => {
   const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [url, setUrl] = useState<string>("");
-  const [field, setField] = useState<
-    { txt: string; value: string; id: number }[]
-  >([]);
-  const [thumbnail, setThumbnail] = useState<{
-    url: string;
-  }>({
+  const [description, setDescription] = useState<Message["title"]>("");
+  const [url, setUrl] = useState<Message["url"]>("");
+  const [field, setField] = useState<Message["field"]>([]);
+  const [thumbnail, setThumbnail] = useState<Message["thumbnail"]>({
     url: "",
   });
-  const [footer, setFooter] = useState<{ value: string; icon_url: string }>({
-    value: "",
-    icon_url: "",
+  const [footer, setFooter] = useState<Message["footer"]>({
+    text: "",
+    // icon_url: "",
   });
-  const [color, setColor] = useState<string>("");
-  const [timestamp, setTimestamp] = useState<string | Date>("");
-  const [image, setImage] = useState<{
-    url: string;
-    width: number;
-    height: number;
-  }>({
+  const [color, setColor] = useState<Message["color"]>("");
+  const [timestamp, setTimestamp] = useState<Message["timestamp"]>("");
+  const [image, setImage] = useState<Message["image"]>({
     url: "",
-    width: 0,
-    height: 0,
   });
 
   const handleChangeInputText = (args: string, value: any) => {
@@ -45,7 +35,7 @@ const Home: NextPage = () => {
         setUrl(value);
         break;
       case "footer":
-        setFooter({ ...footer, value: value });
+        setFooter({ ...footer, text: value });
         break;
     }
   };
@@ -53,15 +43,18 @@ const Home: NextPage = () => {
   return (
     <main className="container">
       <Head>
-        <title>Home</title>
+        <title>Embed Discord</title>
         <meta charSet="UTF8" />
         <meta name="theme-color" content="#ffbd58" />
         <meta name="title" content="Embed Discord" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="content1">
         <InputText
           name="title"
           onChange={(args) => handleChangeInputText("title", args)}
+          maxLength={256}
+          autoFocus={true}
         />
         <InputText
           name="url"
@@ -70,10 +63,12 @@ const Home: NextPage = () => {
         <InputText
           name="description"
           onChange={(args) => handleChangeInputText("description", args)}
+          maxLength={4096}
         />
         <InputText
           name="footer"
           onChange={(args) => handleChangeInputText("footer", args)}
+          maxLength={256}
         />
         <InputColor setColor={setColor} />
         <Thumbnail setThumbnail={setThumbnail} />
@@ -85,30 +80,35 @@ const Home: NextPage = () => {
               setField([
                 ...field,
                 {
-                  txt: "",
+                  name: "",
                   value: "",
                   id: field.length + 1,
                 },
               ]);
             }}
           >
-            Ajouter un champ
+            Add Field
           </button>
-          {/* suprimmer le dernier field */}
+
           <button
             className="btn"
             onClick={() => {
               setField(field.slice(0, field.length - 1));
             }}
+            disabled={field.length === 0}
+            style={{
+              backgroundColor:
+                field.length === 0 ? "var(--gris)" : "var(--blue)",
+            }}
           >
-            Supprimer le dernier champ
+            Remove Field
           </button>
         </div>
 
         {field.map((f, i) => (
           <Field
             key={i}
-            txt={f.txt}
+            name={f.name}
             value={f.value}
             id={f.id}
             onChange={(newField) => {
@@ -123,28 +123,85 @@ const Home: NextPage = () => {
         ))}
       </div>
 
-      <div className="content2">
-        {isValid({
-          title,
-          description,
-          url,
-          field,
-          thumbnail,
-          footer,
-        } as Message) ? (
-          <Embed
-            title={title ? title : null}
-            description={description ? description : null}
-            url={url ? url : null}
-            field={field ? field : undefined}
-            footer={footer ? footer : undefined}
-            timestamp={timestamp ? new Date() : undefined}
-            color={color ? color : null}
-            thumbnail={thumbnail ? thumbnail : undefined}
-          />
-        ) : (
-          <h2>Commencez par rentrer quelque chose</h2>
-        )}
+      <div className="revel">
+        <div className="content2">
+          {isValid({
+            title,
+            description,
+            url,
+            thumbnail,
+            footer,
+            color,
+            timestamp,
+            image,
+            field,
+          } as Message) ? (
+            <Embed
+              title={title}
+              description={description}
+              url={url}
+              field={field}
+              footer={footer}
+              timestamp={timestamp ? new Date() : undefined}
+              color={color}
+              thumbnail={thumbnail}
+            />
+          ) : (
+            <h2>Start by entering something</h2>
+          )}
+        </div>
+
+        <div className="content3">
+          {isValid({
+            title,
+            description,
+            url,
+            thumbnail,
+            footer,
+            color,
+            timestamp,
+            image,
+            field,
+          } as Message) ? (
+            <textarea
+              className="code"
+              onClick={(e) => {
+                e.currentTarget.select();
+              }}
+              value={JSON.stringify(
+                {
+                  embeds: [
+                    {
+                      ...(title && { title }),
+                      ...(description && { description }),
+                      ...(url && { url }),
+                      ...(field[0] && {
+                        fields: field.map((f) => {
+                          return {
+                            name: f.name,
+                            value: f.value,
+                          };
+                        }),
+                      }),
+                      ...(footer["text"] && footer.text && { footer }),
+                      ...(timestamp && { timestamp }),
+                      ...(color && { color }),
+                      // ...(thumbnail["url"] && {
+                      //   thumbnail: {
+                      //     url: thumbnail.url,
+                      //   },
+                      // }),
+                    },
+                  ],
+                },
+                null,
+                2
+              )}
+            ></textarea>
+          ) : (
+            <img className="imgfav" src="/favicon.ico" />
+          )}
+        </div>
       </div>
     </main>
   );

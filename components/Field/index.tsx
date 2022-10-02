@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from "react";
+import { Message } from "../../types/message";
 import styles from "./styles.module.scss";
 
 interface FieldProps {
-  txt: string;
-  value: string;
-  id: number
-  onChange: (newField: { txt: string; value: string; id: number }) => void;
+  name: Message["field"][0]["name"];
+  value: Message["field"][0]["value"];
+  id: Message["field"][0]["id"];
+  onChange: (newField: { name: string; value: string; id: number }) => void;
 }
 
-const Field = ({ onChange, txt, value, id }: FieldProps) => {
-  const [stxt, setTxt] = useState<string>(txt);
+const Field = ({ onChange, name, value, id }: FieldProps) => {
+  const [sname, setName] = useState<string>(name);
   const [svalue, setValue] = useState<string>(value);
 
   useEffect(() => {
-    onChange({ txt: stxt, value: svalue, id });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stxt, svalue]);
+    onChange({ name: sname, value: svalue, id });
+  }, [sname, svalue]);
 
   const handleChange = (args: string, value: string) => {
     switch (args) {
-      case "txt":
-        setTxt(value);
+      case "name":
+        setName(value);
         break;
       case "value":
         setValue(value);
@@ -30,12 +30,12 @@ const Field = ({ onChange, txt, value, id }: FieldProps) => {
   return (
     <main className={styles.container}>
       <div className={styles.flexbox}>
-        <h2>Text</h2>
+        <h2>Name</h2>
         <input
           type="text"
           maxLength={256}
-          placeholder={`Entrer un texte`}
-          onChange={(e) => handleChange("txt", e.target.value)}
+          placeholder={`Entrer a Name`}
+          onChange={(e) => handleChange("name", e.target.value)}
         />
       </div>
       <div className={styles.flexbox}>
@@ -43,7 +43,7 @@ const Field = ({ onChange, txt, value, id }: FieldProps) => {
         <input
           type="text"
           maxLength={1024}
-          placeholder={`Entrer une value (optionnel)`}
+          placeholder={`Entrer a Value`}
           onChange={(e) => handleChange("value", e.target.value)}
         />
       </div>

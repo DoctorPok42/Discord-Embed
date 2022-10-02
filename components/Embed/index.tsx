@@ -46,7 +46,7 @@ const Embed = ({
         field.map((f, i) => <Field key={i} txt={f.name} value={f.value} />)}
       {footer && (
         <div className={styles.footer}>
-          {footer.icon_url && (
+          {/* {footer.icon_url && (
             <Image
               className="icon"
               src={footer.icon_url}
@@ -54,7 +54,7 @@ const Embed = ({
               height={20}
               alt="icon"
             />
-          )}
+          )} */}
           <span>{footer.text}</span>
         </div>
       )}

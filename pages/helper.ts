@@ -1,4 +1,4 @@
-import { Message } from "../types/types";
+import { Message } from "../types/message";
 
 export const isValid = ({
   title,
@@ -12,11 +12,11 @@ export const isValid = ({
   if (
     title !== "" ||
     description !== "" ||
-    thumbnail.url !== "" ||
-    color == "" ||
+    // thumbnail.url !== "" ||
+    color != "" ||
     (field.length > 0 &&
       field.every((f: any) => f.txt !== "" || f.value !== "")) ||
-    footer.value !== ""
+    footer.text !== ""
   ) {
     return true;
   }

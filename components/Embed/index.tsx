@@ -2,18 +2,7 @@ import Field from "./field";
 import Image from "next/image";
 
 import styles from "./styles.module.scss";
-
-interface EmbedProps {
-  title?: string | null;
-  description?: string | null;
-  url?: string | any;
-  field?: { txt: string; value: string }[] | null;
-  thumbnail?: { url: string };
-  footer?: { value: string; icon_url: string };
-  color?: string | null;
-  timestamp?: string | Date;
-  image?: { url: string; width: number; height: number };
-}
+import { Message } from "../../types/message";
 
 const Embed = ({
   title,
@@ -25,10 +14,13 @@ const Embed = ({
   color,
   timestamp,
   image,
-}: EmbedProps) => {
+}: Message) => {
   return (
     <main className={styles.containerembed}>
-      <span className={styles.color} style={{ backgroundColor: color }}></span>
+      <span
+        className={styles.color}
+        style={{ backgroundColor: color as string }}
+      ></span>
       {thumbnail && thumbnail.url !== "" ? (
         <div className={styles.thumbnail}>
           <Image
@@ -51,7 +43,7 @@ const Embed = ({
       )}
       {description && <p className={styles.description}>{description}</p>}
       {field &&
-        field.map((f, i) => <Field key={i} txt={f.txt} value={f.value} />)}
+        field.map((f, i) => <Field key={i} txt={f.name} value={f.value} />)}
       {footer && (
         <div className={styles.footer}>
           {footer.icon_url && (
@@ -63,7 +55,7 @@ const Embed = ({
               alt="icon"
             />
           )}
-          <span>{footer.value}</span>
+          <span>{footer.text}</span>
         </div>
       )}
     </main>

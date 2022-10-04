@@ -1,6 +1,6 @@
 import { Message } from "../types/message";
 
-export const isValid = ({
+const isValid = ({
   title,
   description,
   thumbnail,
@@ -22,3 +22,5 @@ export const isValid = ({
   }
   return false;
 };
+
+export default isValid;

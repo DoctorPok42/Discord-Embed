@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Embed, InputText, Field, InputColor, Thumbnail } from "../components";
-import { isValid } from "./helper";
+import isValid from "./helper";
 import { Message } from "../types/message";
 
 const Home: NextPage = () => {

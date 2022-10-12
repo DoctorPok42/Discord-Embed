@@ -12,7 +12,7 @@ const isValid = ({
   if (
     title !== "" ||
     description !== "" ||
-    // thumbnail.url !== "" ||
+    thumbnail.url !== "" ||
     color != "" ||
     (field.length > 0 &&
       field.every((f: any) => f.txt !== "" || f.value !== "")) ||

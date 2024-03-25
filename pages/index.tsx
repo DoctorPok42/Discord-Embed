@@ -163,41 +163,44 @@ const Home: NextPage = () => {
             image,
             field,
           } as Message) ? (
-            <textarea
-              className="code"
-              onClick={(e) => {
-                e.currentTarget.select();
-              }}
-              value={JSON.stringify(
-                {
-                  embeds: [
-                    {
-                      ...(title && { title }),
-                      ...(description && { description }),
-                      ...(url && { url }),
-                      ...(field[0] && {
-                        fields: field.map((f) => {
-                          return {
-                            name: f.name,
-                            value: f.value,
-                          };
+            (console.log(thumbnail.url),
+            (
+              <textarea
+                className="code"
+                onClick={(e) => {
+                  e.currentTarget.select();
+                }}
+                value={JSON.stringify(
+                  {
+                    embeds: [
+                      {
+                        ...(title && { title }),
+                        ...(description && { description }),
+                        ...(url && { url }),
+                        ...(field[0] && {
+                          fields: field.map((f) => {
+                            return {
+                              name: f.name,
+                              value: f.value,
+                            };
+                          }),
                         }),
-                      }),
-                      ...(footer["text"] && footer.text && { footer }),
-                      ...(timestamp && { timestamp }),
-                      ...(color && { color }),
-                      // ...(thumbnail["url"] && {
-                      //   thumbnail: {
-                      //     url: thumbnail.url,
-                      //   },
-                      // }),
-                    },
-                  ],
-                },
-                null,
-                2
-              )}
-            ></textarea>
+                        ...(footer["text"] && footer.text && { footer }),
+                        ...(timestamp && { timestamp }),
+                        ...(color && { color }),
+                        // ...(thumbnail["url"] && {
+                        //   thumbnail: {
+                        //     url: thumbnail.url,
+                        //   },
+                        // }),
+                      },
+                    ],
+                  },
+                  null,
+                  2
+                )}
+              ></textarea>
+            ))
           ) : (
             <img className="imgfav" src="/favicon.ico" />
           )}
